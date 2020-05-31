@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:mule-zuora-connector="http://www.mulesoft.org/schema/mule/mule-zuora-connector" xmlns:slack="http://www.mulesoft.org/schema/mule/slack"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:spring="http://www.mulesoft.org/schema/mule/spring" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/spring http://www.mulesoft.org/schema/mule/spring/current/mule-spring.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/slack http://www.mulesoft.org/schema/mule/slack/current/mule-slack.xsd
+http://www.mulesoft.org/schema/mule/mule-zuora-connector http://www.mulesoft.org/schema/mule/mule-zuora-connector/current/mule-mule-zuora-connector.xsd">
+	<configuration-properties doc:name="Configuration properties" doc:id="247e348f-0bce-4148-b776-5ef5155858e5" file="brodcast-properties.yaml" />
+	<salesforce:sfdc-config name="Salesforce_Config" doc:name="Salesforce Config" doc:id="baeb1e26-a1ff-4c0b-a138-f68e5b61bdfd" >
+		<salesforce:basic-connection username="${salesforce.username}" password="${salesforce.password}" securityToken="${salesforce.token}" url="${salesforce.endpoint}" />
+	</salesforce:sfdc-config>
+	<spring:config name="Spring_Config" doc:name="Spring Config" doc:id="fd323db6-0d0d-4731-9eae-eb072bed4a46" files="spring-config.xml" />
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="4e0d6628-3f40-43b7-8e1b-fb6b87da2723" >
+		<db:data-source-connection dataSourceRef="dataSource" />
+	</db:config>
+	<slack:config name="Slack_Config" doc:name="Slack Config" doc:id="6fb2d49f-caf8-4013-b0b4-bfec54557900" >
+		<slack:token-connection token="${slack.token}" />
+	</slack:config>
+	<mule-zuora-connector:config name="Zuora_Connector___Mule_4_Config" doc:name="Zuora Connector - Mule 4 Config" doc:id="01d3b60d-9adc-41fc-9a1c-618d316bab4d" >
+		<mule-zuora-connector:basic-auth-connection username="${zuora.username}" password="${zuora.password}" />
+	</mule-zuora-connector:config>
+</mule>

@@ -1,0 +1,20 @@
+salesforce:
+  username: "salescpq@standav.com"
+  password: "b2n3()@Lilkik"
+  token: "nnMvhvsINRXmEdkM6FTvPhDw"
+  endpoint: "https://login.salesforce.com/services/Soap/u/48/"
+  
+  
+last.updated.date: "2020-01-01 00:00:00"
+
+db:
+  username: "postgres"
+  password: "postgres"
+  driver: "org.postgresql.Driver"
+  url: "jdbc:postgresql://localhost:5432/integration_patterns"
+  
+slack.token: "xoxp-406678863297-407234448690-899246818949-a84fbfac0dd8cf172d454648c2ee3bfc"
+
+zuora:
+  username: "bhavanichandra@themuler.com"
+  password: "Lilkik098@123"
