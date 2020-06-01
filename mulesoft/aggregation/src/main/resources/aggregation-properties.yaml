@@ -1,0 +1,13 @@
+http.port: "8081"
+
+salesforce:
+  username: "salescpq@standav.com"
+  password: "b2n3()@Lilkik"
+  token: "nnMvhvsINRXmEdkM6FTvPhDw"
+  endpoint: "https://login.salesforce.com/services/Soap/u/48"
+
+salesforce2:
+  username: "bhavanichandra9@gmail.com"
+  password: "b2n3()@Lilkik123"
+  token: "WuwFzTYzXaHVMikaRh3Y8AlCU"
+  endpoint: "https://login.salesforce.com/services/Soap/u/48"

@@ -2,7 +2,7 @@ salesforce:
   username: "salescpq@standav.com"
   password: "b2n3()@Lilkik"
   token: "nnMvhvsINRXmEdkM6FTvPhDw"
-  endpoint: "https://login.salesforce.com/services/Soap/u/48/"
+  endpoint: "https://login.salesforce.com/services/Soap/u/48"
   
   
 last.updated.date: "2020-01-01 00:00:00"
@@ -13,7 +13,7 @@ db:
   driver: "org.postgresql.Driver"
   url: "jdbc:postgresql://localhost:5432/integration_patterns"
   
-slack.token: "xoxp-406678863297-407234448690-899246818949-a84fbfac0dd8cf172d454648c2ee3bfc"
+slack.token: "xoxp-406678863297-407234448690-1148896358166-eceb1df11a46c3a2dbbcb2f8b84611dc"
 
 zuora:
   username: "bhavanichandra@themuler.com"

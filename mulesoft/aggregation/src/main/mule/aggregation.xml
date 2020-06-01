@@ -1,5 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd"></mule>
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+	<flow name="aggregation-main" doc:id="e2e03454-b368-4a29-9443-f78566ca189e" >
+		<http:listener doc:name="Listener" doc:id="75fb4775-c893-4d00-bef4-8a41b39c9a04" path="/api/aggregate" config-ref="HTTP_Listener_config"/>
+		<scatter-gather doc:name="Scatter-Gather" doc:id="7be177c5-2f4d-4422-bfc5-06cabbce2fd7" >
+			<route >
+				<salesforce:query doc:name="Salesforce Org 1 Query Contact" doc:id="0ed0ea51-ecdd-4af3-8452-deeb955a8131" config-ref="Salesforce_Org1_Config">
+			<salesforce:salesforce-query><![CDATA[SELECT Id, FirstName, LastName, Email, Phone, CreatedDate, LastModifiedDate From Contact]]></salesforce:salesforce-query>
+		</salesforce:query>
+			</route>
+			<route >
+				<salesforce:query doc:name="Salesforce Org 2 Query Contact" doc:id="e091036e-b4d1-42e8-9f35-044ad0003319" config-ref="Salesforce_Org1_Config">
+					<salesforce:salesforce-query ><![CDATA[SELECT Id, FirstName, LastName, Email, Phone, CreatedDate, LastModifiedDate From Contact]]></salesforce:salesforce-query>
+				</salesforce:query>
+			</route>
+		</scatter-gather>
+		<ee:transform doc:name="Merge into one JSON" doc:id="4ad43b74-74f8-4cc3-a59d-8f8b04fd24c9">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+flatten(payload pluck (value,key) -> (value.payload))]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Transforms to CSV comma delimited" doc:id="b65336ae-24d3-48c4-b99d-fbd940f141cd" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output text/csv streaming=true, separator=",", header=false 
+---
+payload map {
+	salesforceId: $.Id,
+	firstName: $.FirstName,
+	lastname: $.LastName,
+	email: $.Email,
+	mobile: $.Phone,
+	createdDate: $.CreatedDate,
+	updatedDate: $.LastModifiedDate
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<set-variable value="#['contact-' ++ now() as String {format: &quot;yyyyMMddHHmmss&quot;} ++ &quot;.csv&quot;]" doc:name="CSV File Name" doc:id="fd371998-5697-48ba-acf0-1f0fe6f8a495" variableName="fileName"/>
+		<file:write doc:name="Write file to disk" doc:id="3eaada42-3d46-4b03-a041-515c6ead3962" path="#['D:/Work/Workspace/integration-patterns/mulesoft/aggregation/data/' ++ vars.fileName]"/>
+	</flow>
+</mule>
